@@ -314,6 +314,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     // The currently used message format.
     private SimpleMessageFormat currentMessageFormat;
 
+    private boolean isBoldActive = false;
+    private boolean isItalicActive = false;
+    private boolean isUnderlineActive = false;
+
     private boolean isInSubActivity = false;
 
     private boolean navigateUp;
@@ -412,6 +416,95 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
         applyIncognitoKeyboardSetting(messageContentView);
+
+        final com.google.android.material.button.MaterialButton btnBold = findViewById(R.id.btn_format_bold);
+        final com.google.android.material.button.MaterialButton btnItalic = findViewById(R.id.btn_format_italic);
+        final com.google.android.material.button.MaterialButton btnUnderline = findViewById(R.id.btn_format_underline);
+
+        btnBold.setOnClickListener(v -> {
+            int start = messageContentView.getSelectionStart();
+            int end = messageContentView.getSelectionEnd();
+            if (start != end) {
+                applySpanToSelection(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD));
+            } else {
+                isBoldActive = !isBoldActive;
+                updateFormatButtonState(btnBold, isBoldActive);
+            }
+        });
+
+        btnItalic.setOnClickListener(v -> {
+            int start = messageContentView.getSelectionStart();
+            int end = messageContentView.getSelectionEnd();
+            if (start != end) {
+                applySpanToSelection(new android.text.style.StyleSpan(android.graphics.Typeface.ITALIC));
+            } else {
+                isItalicActive = !isItalicActive;
+                updateFormatButtonState(btnItalic, isItalicActive);
+            }
+        });
+
+        btnUnderline.setOnClickListener(v -> {
+            int start = messageContentView.getSelectionStart();
+            int end = messageContentView.getSelectionEnd();
+            if (start != end) {
+                applySpanToSelection(new android.text.style.UnderlineSpan());
+            } else {
+                isUnderlineActive = !isUnderlineActive;
+                updateFormatButtonState(btnUnderline, isUnderlineActive);
+            }
+        });
+
+        findViewById(R.id.btn_format_bullet).setOnClickListener(v -> {
+            int start = messageContentView.getSelectionStart();
+            messageContentView.getText().insert(Math.max(0, start), "• ");
+        });
+
+        findViewById(R.id.btn_format_link).setOnClickListener(v -> {
+            int start = messageContentView.getSelectionStart();
+            int end = messageContentView.getSelectionEnd();
+            if (start == end) {
+                android.widget.Toast.makeText(this, "Please select text to turn into a link", android.widget.Toast.LENGTH_SHORT).show();
+                return;
+            }
+            final android.widget.EditText input = new android.widget.EditText(this);
+            input.setHint("https://example.com");
+            new android.app.AlertDialog.Builder(this)
+                .setTitle("Insert Link")
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    String url = input.getText().toString();
+                    if (!url.isEmpty()) {
+                        applySpanToSelection(new android.text.style.URLSpan(url));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+        });
+
+        messageContentView.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                changesMadeSinceLastSave = true;
+                if (count > 0 && s instanceof android.text.Editable) {
+                    android.text.Editable editable = (android.text.Editable) s;
+                    if (isBoldActive) {
+                        editable.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), start, start + count, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    if (isItalicActive) {
+                        editable.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.ITALIC), start, start + count, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    if (isUnderlineActive) {
+                        editable.setSpan(new android.text.style.UnderlineSpan(), start, start + count, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
 
         attachmentsView = findViewById(R.id.attachments);
 
@@ -2303,6 +2396,25 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @StringRes
         public int getTitleResource() {
             return titleResource;
+        }
+    }
+
+    private void applySpanToSelection(Object span) {
+        int start = messageContentView.getSelectionStart();
+        int end = messageContentView.getSelectionEnd();
+        if (start != end) {
+            android.text.Editable editable = messageContentView.getText();
+            editable.setSpan(span, start, end, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private void updateFormatButtonState(com.google.android.material.button.MaterialButton button, boolean isActive) {
+        if (isActive) {
+            button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF1976D2));
+            button.setTextColor(android.graphics.Color.WHITE);
+        } else {
+            button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.TRANSPARENT));
+            button.setTextColor(android.graphics.Color.BLACK);
         }
     }
 }

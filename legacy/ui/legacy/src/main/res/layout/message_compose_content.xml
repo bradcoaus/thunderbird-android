@@ -72,6 +72,111 @@ the 'composer theme' setting).
             tools:ignore="InefficientWeight"
             />
 
+        <!-- Rich Text Formatting Toolbar (Compact / Bottom) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp"
+            android:gravity="center"
+            android:background="?attr/colorSurfaceContainerLow"
+            tools:ignore="HardcodedText"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/btn_format_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="B"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:minWidth="0dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/btn_format_italic"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="I"
+                android:textStyle="italic"
+                android:textColor="@android:color/black"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:minWidth="0dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/btn_format_underline"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="U"
+                android:textColor="@android:color/black"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:minWidth="0dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/btn_format_bullet"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="•"
+                android:textColor="@android:color/black"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:minWidth="0dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/btn_format_link"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="Link"
+                android:textColor="@android:color/black"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:minWidth="0dp"
+                />
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/upper_signature"
             android:layout_width="fill_parent"

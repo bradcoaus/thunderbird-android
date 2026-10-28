@@ -47,7 +47,7 @@ object HtmlConverter {
      */
     @JvmStatic
     @JvmOverloads
-    fun textToHtmlFragment(text: String, htmlTag: HTMLTag = HTMLTag.DIV): String {
+    fun textToHtmlFragment(text: CharSequence, htmlTag: HTMLTag = HTMLTag.DIV): String {
         return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = false, htmlTag)
     }
 }

@@ -138,7 +138,7 @@ class TextToHtml private constructor(
     }
 
     companion object {
-        private val HTML_MODIFIERS = listOf(DividerReplacer, UriLinkifier, SignatureWrapper)
+        private val HTML_MODIFIERS = listOf(DividerReplacer, UriLinkifier, SignatureWrapper, SpanHtmlModifier)
 
         private const val SPACE = ' '
         private const val NON_BREAKING_SPACE = '\u00A0'
